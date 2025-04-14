@@ -1,17 +1,13 @@
 import { Router } from 'express';
-import { registrarUsuario, iniciarSesion } from '../controllers/auth.controllers.js';
-import { cerrarSesion } from '../controllers/auth.controllers.js';
-
+import { registrarUsuario } from '../controllers/auth/register.controllers.js';
+import { iniciarSesion } from '../controllers/auth/login.controllers.js';
+import { cerrarSesion } from '../controllers/auth/logout.controllers.js';
 
 const router = Router();
 
-// POST /auth/register
 router.post('/register', registrarUsuario);
-
-// POST /auth/login
 router.post('/login', iniciarSesion);
-
-// PUT /logout
 router.put('/logout', cerrarSesion);
 
 export default router;
+

@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import statsRoutes from './routes/stats.routes.js';
+import profileRoutes from './routes/profile.routes.js';
 
 // Importamos rutas
 import indexRoutes from './routes/index.routes.js';
@@ -20,6 +22,8 @@ app.use(express.json());
 // Registramos las rutas
 app.use('/', indexRoutes);
 app.use('/auth', authRoutes);
+app.use('/estadisticas', statsRoutes);
+app.use('/perfil', profileRoutes);
 
 // Escuchamos en el puerto configurado
 const PORT = process.env.PORT || 3000;
