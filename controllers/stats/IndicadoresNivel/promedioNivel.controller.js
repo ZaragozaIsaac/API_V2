@@ -1,7 +1,7 @@
-// controllers/stats/monitoreo/promedioNivel.controller.js
+// controllers/stats/IndicadoresNivel/promedioNivel.controller.js
 import { connectDB } from '../../../utils/sql.js';
 
-export const obtenerPromedioPorNivel = async (req, res) => {
+export const obtenerPromedioPuntosPorNivel = async (req, res) => {
   try {
     const pool = connectDB();
     const result = await pool.query(`
@@ -11,13 +11,14 @@ export const obtenerPromedioPorNivel = async (req, res) => {
       FROM Partidas p
       JOIN Niveles n ON p.idNivel = n.idNivel
       JOIN Usuarios u ON p.idUsuario = u.idUsuario
-      WHERE u.idTipoCuenta = 2
+      WHERE u.idTipoCuenta = 1
       GROUP BY n.nombreNivel
       ORDER BY promedio_puntos DESC;
     `);
+
     res.json(result.rows);
   } catch (error) {
     console.error("Error al obtener promedio por nivel:", error);
-    res.status(500).json({ error: 'Error al obtener promedio por nivel' });
+    res.status(500).json({ error: "Error al obtener promedio por nivel" });
   }
 };

@@ -12,6 +12,8 @@ export const obtenerTopPartidasSemana = async (req, res) => {
       FROM Usuarios u
       JOIN Partidas p ON u.idUsuario = p.idUsuario
       WHERE u.idTipoCuenta = 1
+        AND p.inicioPartida >= date_trunc('week', CURRENT_DATE)
+        AND p.inicioPartida <= NOW()
       GROUP BY u.idUsuario, u.nombreUsuario
       ORDER BY total_partidas DESC
       LIMIT 10;

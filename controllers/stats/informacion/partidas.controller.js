@@ -12,7 +12,7 @@ export const obtenerPartidasSemana = async (req, res) => {
       GROUP BY fecha
       ORDER BY fecha;
     `);
-    res.json(result.rows[0]);
+    res.json(result.rows);
   } catch (error) {
     console.error("Error al obtener partidas de la semana:", error);
     res.status(500).json({ error: 'Error al obtener partidas de la semana' });

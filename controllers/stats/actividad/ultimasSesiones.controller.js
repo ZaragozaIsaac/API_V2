@@ -6,14 +6,13 @@ export const obtenerUltimasSesiones = async (req, res) => {
     const pool = connectDB();
     const result = await pool.query(`
       SELECT
-          u.idUsuario,
-          u.nombreUsuario,
-          u.correoUsuario,
-          s.fechaInicio AS ultima_sesion
-      FROM Usuarios u
-      JOIN Sesiones s ON u.idUsuario = s.idUsuario
-      ORDER BY s.fechaInicio DESC
-      LIMIT 10;
+        TRIM(TO_CHAR(s.fechaInicio, 'Day')) AS dia_semana,
+        COUNT(*) AS cantidad_sesiones
+      FROM Sesiones s
+      WHERE s.fechaInicio >= date_trunc('week', CURRENT_DATE)
+        AND s.fechaInicio <= NOW()
+      GROUP BY dia_semana
+      ORDER BY MIN(s.fechaInicio);
     `);
     res.json(result.rows);
   } catch (error) {

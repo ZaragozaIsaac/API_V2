@@ -12,9 +12,10 @@ export const obtenerTopPuntajeSemanal = async (req, res) => {
       FROM Usuarios u
       JOIN Partidas p ON u.idUsuario = p.idUsuario
       WHERE u.idTipoCuenta = 1
-        AND p.inicioPartida >= NOW() - INTERVAL '7 days'
+        AND p.inicioPartida >= date_trunc('week', CURRENT_DATE)
+        AND p.inicioPartida <= NOW()
       GROUP BY u.idUsuario, u.nombreUsuario
-      ORDER BY puntos_ultimos_7_dias DESC
+      ORDER BY puntos_ultimos_7_dias ASC
       LIMIT 10;
     `);
     res.json(result.rows);

@@ -6,14 +6,13 @@ export const obtenerUltimasPartidas = async (req, res) => {
     const pool = connectDB();
     const result = await pool.query(`
       SELECT
-          u.idUsuario,
-          u.nombreUsuario,
-          p.inicioPartida AS fecha_partida,
-          p.puntosObtenidos
+        TRIM(TO_CHAR(p.inicioPartida, 'Day')) AS dia_semana,
+        COUNT(*) AS cantidad_partidas
       FROM Partidas p
-      JOIN Usuarios u ON p.idUsuario = u.idUsuario
-      ORDER BY p.inicioPartida DESC
-      LIMIT 10;
+      WHERE p.inicioPartida >= date_trunc('week', CURRENT_DATE)
+        AND p.inicioPartida <= NOW()
+      GROUP BY dia_semana
+      ORDER BY MIN(p.inicioPartida);
     `);
     res.json(result.rows);
   } catch (error) {
